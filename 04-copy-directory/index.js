@@ -15,9 +15,8 @@ fs.mkdir(filesCopy, {recursive: true, force: true}, err => {
 files.forEach(file => {
 fs.copyFile(path.join(__dirname, 'files', file.name), path.join(__dirname, 'files-copy', file.name), (err) => {
     if (err) throw err;
-                    });
                 });
-            }); 
-        }
-    );
+            });
+        }); 
+    });
 });
