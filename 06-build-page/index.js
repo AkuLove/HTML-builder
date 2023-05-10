@@ -42,19 +42,15 @@ copyDirectory (assets,assetsCopy);
 
 //============05=======================
 //Сборка style.css
-fs.readdir(styles, { withFileTypes: true }, function(err, files) {
+fs.readdir(styles, { withFileTypes: true }, (err, files) => {
     if (err) throw err;
+const extendedFiles = files.filter(file => path.extname(file.name) === '.css');
+const writeStream = fs.createWriteStream(path.join(__dirname, 'project-dist/style.css'));
 
-    files.forEach(file => {
-    const extension = path.parse(file.name).ext;
+extendedFiles.forEach((file) => {
+const readStream = fs.createReadStream(path.join(styles, file.name));
 
-    if (file.isFile() && extension === '.css') {
-    const readStream = fs.createReadStream(path.join(styles, file.name));
-    
-    readStream.on('data', data => { 
-        fs.createWriteStream(path.join(__dirname, 'project-dist/style.css')).write(data)
-            });
-        }
+readStream.on('data', data => writeStream.write(data + '\n'));
     });
 });
 
